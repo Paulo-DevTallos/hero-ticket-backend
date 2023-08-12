@@ -6,9 +6,20 @@ export class EventController {
     constructor(private eventUseCase: EventUseCase) {}
 
     async create(req: Request, res: Response, next: NextFunction) {
-        const eventData: EventEntity = req.body;
+        let eventData: EventEntity = req.body;
+        const files = req.files as any;
 
-        console.log(req.files)
+        if (files) {
+            const banner = files.banner[0];
+            const flyers = files.flyers;
+
+            eventData = {
+                ...eventData,
+                banner: banner.filename,
+                flyers: flyers.map((flyer: any) => flyer.filename)
+            }
+        }
+
         try {
             await this.eventUseCase.create(eventData);
 

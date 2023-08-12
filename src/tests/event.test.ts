@@ -31,9 +31,9 @@ describe('Event integration test', () => {
             .field('location[longitude]', event.location.longitude)
             .field('price[sector]', event.price[0].sector)
             .field('price[amount]', event.price[0].amount)
-            .attach('banner', '/Users/paulo.sergio/Desktop/development-paulo/projetos/banner.png')
-            .attach('flyers', '/Users/paulo.sergio/Desktop/development-paulo/projetos/flyer1.png')
-            .attach('flyers', '/Users/paulo.sergio/Desktop/development-paulo/projetos/flyer2.png');
+            .attach('banner', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/banner.png')
+            .attach('flyers', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/flyer1.png')
+            .attach('flyers', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/flyer2.png');
 
         if (response.error) {
             console.log(response.error)

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { EventEntity } from "../entities/Event";
 import { EventRepository } from "./EventRepository";
+import { LocationEntity } from "../entities/Location";
 
 const eventSchema = new mongoose.Schema({
     title: String,
@@ -35,5 +36,11 @@ export class EventRepositoryMongoose implements EventRepository {
 
         await eventModel.save();
         return event;
+    }
+
+    async findByLocationAndDate(location: LocationEntity, date: Date): Promise<EventEntity | undefined> {
+        const findEvent = await EventModel.findOne({ location, date }).exec();
+        
+        return findEvent ? findEvent.toObject() : undefined;
     }
 }

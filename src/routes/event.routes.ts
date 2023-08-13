@@ -29,6 +29,10 @@ export class EventRoutes {
                     maxCount: 3
                 }
             ]), 
-            this.eventController.create.bind(this.eventController));
+            this.eventController.create.bind(this.eventController)
+        );
+
+        this.router.get('/location', this.eventController.findEventByLocation.bind(this.eventController));
+        this.router.get('/category/:category', this.eventController.findEventByCategory.bind(this.eventController));
     }
 }

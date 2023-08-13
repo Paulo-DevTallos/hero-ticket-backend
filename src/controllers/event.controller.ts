@@ -18,6 +18,8 @@ export class EventController {
                 banner: banner.filename,
                 flyers: flyers.map((flyer: any) => flyer.filename)
             }
+
+            console.log(eventData)
         }
 
         try {
@@ -28,5 +30,30 @@ export class EventController {
             next(error);
             // verifica se tem erro e repassa next para o interceptor
         }
-    }
+    };
+
+    async findEventByLocation(req: Request, res: Response, next: NextFunction) {
+        const { lat, lng } = req.query;
+
+        try {
+            const latitude = String(lat)
+            const longitude = String(lng)
+
+            const events = await this.eventUseCase.findEventByLocation(latitude, longitude);
+            return res.status(200).json(events);
+        } catch (error) {
+            
+        }
+    };
+
+    async findEventByCategory(req: Request, res: Response, next: NextFunction) {
+        const { category } = req.params;
+
+        try {
+            const events = await this.eventUseCase.findEventsByCategory(String(category));
+            return res.status(200).json(events)
+        } catch (error) {
+            next(error)
+        }
+    };
 }

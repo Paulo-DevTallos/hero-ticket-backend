@@ -18,9 +18,8 @@ const eventSchema = new mongoose.Schema({
     categories: [String],
     banner: String,
     flyers: [String],
-    price: {
-        type: Array,
-    },
+    coupons: { Type: Array },
+    price: { type: Array },
     city: String,
     participants: {
         type: Array,
@@ -42,5 +41,19 @@ export class EventRepositoryMongoose implements EventRepository {
         const findEvent = await EventModel.findOne({ location, date }).exec();
         
         return findEvent ? findEvent.toObject() : undefined;
+    }
+
+    async findEventsByCity(city: string): Promise<EventEntity[]> {
+        const findEvent = await EventModel.find({ city }).exec();
+        // passa tudo para objeto garantindo o retorno  
+
+        return findEvent.map(event => event.toObject());
+    }
+
+    async findEventsByCategory(category: string): Promise<EventEntity[]> {
+        const findEvent = await EventModel.find({ categories: category }).exec();
+        // passa tudo para objeto garantindo o retorno  
+
+        return findEvent.map(event => event.toObject());
     }
 }

@@ -11,7 +11,7 @@ export class EventEntity {
         public categories: string[],
         public description: string,
         public banner: string,
-        public flyers: string,
+        public flyers: string[],
         public coupons: string[],
         public participants: UserEntity[],
         public city: string,

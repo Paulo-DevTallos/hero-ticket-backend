@@ -14,6 +14,8 @@ export class EventUseCase {
 
         if (!eventData.location) throw new HttpExceptions(400, 'Location is required');
 
+        if (!eventData.date) throw new HttpExceptions(400, 'Date is required');
+
         // verifica se ja existe um evento no mesmo local e horário
         const verifyEvent = await this.eventRepository.findByLocationAndDate(eventData.location, eventData.date);
 

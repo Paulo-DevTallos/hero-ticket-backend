@@ -1,46 +1,41 @@
-import request from "supertest";
 import { EventEntity } from "../entities/Event";
-import { App } from "../app";
+import { EventRepository } from "../repositories/EventRepository";
+import { EventUseCase } from "../useCases/eventUseCase"
 
-const app = new App();
-const express = app.app;
+const MockeventRepository = {
+    add: jest.fn(),
+    findEventsByCity: jest.fn(),
+    findByLocationAndDate: jest.fn(),
+    findEventsByCategory: jest.fn(),
+}
 
-describe('Event integration test', () => {
-    it ('Should test POST caller to create an event', async () => {
-        const event: EventEntity = {
-            title: 'Evento de teste',
-            price: [{ sector: 'Pista', amount: '20' }],
-            description: 'Evento descrição',
-            city: 'Fortaleza',
-            location: { latitude: '-3.7645871', longitude: '-38.4837626' },
-            coupons: [],
-            date: new Date(),
-            participants: [],
-            categories: ["Show"],
-            banner: "",
-            flyers: ""
-        }
+const eventUseCase = new EventUseCase(MockeventRepository);
+const event: EventEntity = {
+    title: 'Evento de teste',
+    price: [{ sector: 'Pista', amount: '20' }],
+    description: 'Evento descrição',
+    city: 'Fortaleza',
+    location: { latitude: '-3.7645871', longitude: '-38.4837626' },
+    coupons: [],
+    date: new Date(),
+    participants: [],
+    categories: ["Show"],
+    banner: "banner.png",
+    flyers: ["flyer1.png", "flyer2.png"]
+}
 
-        const response = await request(express)
-            .post('/events')
-            .field('title', event.title)
-            .field('description', event.description)
-            .field('city', event.city)
-            .field('coupons', event.coupons)
-            .field('location[latitude]', event.location.latitude)
-            .field('location[longitude]', event.location.longitude)
-            .field('price[sector]', event.price[0].sector)
-            .field('price[amount]', event.price[0].amount)
-            .field('categories', event.categories   )
-            .attach('banner', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/banner.png')
-            .attach('flyers', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/flyer1.png')
-            .attach('flyers', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/flyer2.png');
-
-        if (response.error) {
-            console.log(response.error)
-        }
-
-        expect(response.status).toBe(201)
-        expect(response.body).toEqual({ message: 'Evento criado com sucesso!' })
+describe('Unit test for categories functions', () => {
+    // limpar os mocks depois que tudo for alocado
+    afterEach(() => {
+        jest.clearAllMocks();
     })
-})
+
+    it ('Should test the flow to return an Array of events by category', async () => {
+        MockeventRepository.findEventsByCategory.mockResolvedValue([event]);
+        const result = await eventUseCase.findEventsByCategory('Show')
+        console.log(result)
+
+        expect(result).toEqual([event]);
+        expect(MockeventRepository.findEventsByCategory).toHaveBeenCalledWith('Show')
+    });
+})  

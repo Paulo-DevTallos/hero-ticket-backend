@@ -12,11 +12,11 @@ describe('Event integration test', () => {
             price: [{ sector: 'Pista', amount: '20' }],
             description: 'Evento descrição',
             city: 'Fortaleza',
-            location: { latitude: '-3.8877611', longitude: '-38.6767966' },
+            location: { latitude: '-3.7645871', longitude: '-38.4837626' },
             coupons: [],
             date: new Date(),
             participants: [],
-            categories: ['Show sertanejo'],
+            categories: ["Show"],
             banner: "",
             flyers: ""
         }
@@ -31,6 +31,7 @@ describe('Event integration test', () => {
             .field('location[longitude]', event.location.longitude)
             .field('price[sector]', event.price[0].sector)
             .field('price[amount]', event.price[0].amount)
+            .field('categories', event.categories   )
             .attach('banner', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/banner.png')
             .attach('flyers', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/flyer1.png')
             .attach('flyers', '/home/paulo-developer/developer/paulo-development/estudos/hero-ttck/flyer2.png');
